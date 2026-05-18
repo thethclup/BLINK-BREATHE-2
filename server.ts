@@ -38,7 +38,95 @@ async function startServer() {
   // MCP POST Endpoint
   app.post("/api/mcp", (req, res) => {
     try {
-      const { action, command, params, task } = req.body || {};
+      const body = req.body || {};
+
+      // Standard MCP Protocol Check (JSON-RPC)
+      if (body.jsonrpc === "2.0") {
+        const { method, params, id } = body;
+
+        if (method === "initialize") {
+          return res.json({
+            jsonrpc: "2.0",
+            id,
+            result: {
+              protocolVersion: "2024-11-05",
+              capabilities: {
+                tools: {},
+                prompts: {},
+                resources: {}
+              },
+              serverInfo: {
+                name: "Blink Breathe Orchestrator",
+                version: "1.0.0"
+              }
+            }
+          });
+        }
+
+        if (method === "tools/list") {
+          return res.json({
+            jsonrpc: "2.0",
+            id,
+            result: {
+              tools: [
+                {
+                  name: "get_race_status",
+                  description: "Get the current warp race status",
+                  inputSchema: { type: "object", properties: {} }
+                },
+                {
+                  name: "start_race",
+                  description: "Start a warp race session",
+                  inputSchema: { type: "object", properties: {} }
+                },
+                {
+                  name: "get_leaderboard",
+                  description: "Get the leaderboard",
+                  inputSchema: { type: "object", properties: {} }
+                },
+                {
+                  name: "optimize_speed",
+                  description: "Optimize speed parameters",
+                  inputSchema: { type: "object", properties: {} }
+                },
+                {
+                  name: "get_track_info",
+                  description: "Get information about the current track",
+                  inputSchema: { type: "object", properties: {} }
+                }
+              ]
+            }
+          });
+        }
+
+        if (method === "tools/call") {
+          return res.json({
+            jsonrpc: "2.0",
+            id,
+            result: {
+              content: [
+                {
+                  type: "text",
+                  text: `Successfully executed tool: ${params?.name || 'unknown'}`
+                }
+              ]
+            }
+          });
+        }
+
+        if (method === "prompts/list" || method === "resources/list") {
+          return res.json({
+            jsonrpc: "2.0",
+            id,
+            result: {
+              [method.split('/')[0]]: []
+            }
+          });
+        }
+      }
+
+      // Legacy commands
+      const { action, command, params, task } = body;
       const cmd = (action || command || task || "").toLowerCase();
 
       let result: any = {};

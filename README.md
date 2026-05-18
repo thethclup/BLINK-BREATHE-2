@@ -2,38 +2,48 @@
 
 Blink & Breathe 2 is a deep, psychological horror survival game set in an ever-shifting liminal nightmare where blinking allows the entities to move. It builds upon the tense foundation of its predecessor introducing new mechanics such as "Sanity Layers", "Memory Horror", and "Breathing Entities".
 
+[Play the Game](https://blink-breathe-2.vercel.app/)
+
 ## Game Concept
 
-You are trapped. 
+You are trapped in an ever-evolving nightmare. 
 The entities only move when you blink. However, staring for too long drains your *sanity*, causing the world to distort around you, and bringing your own deepest fears to life. 
 
-* **Hold (Click/Space)** to keep your eyes open.
+* **Hold (Click/Right-click or Space/Left-click)** to keep your eyes open and control your breathing.
 * **Release** to blink. 
 
 Manage your **Blink Timer**, **Sanity**, and **Fear Level** simultaneously as the horror escalates. Find temporary respite in the **Safe Room**, an occasional fracture in the endless nightmare, to regain control of your breathing.
 
-## On-Chain Horror
+## On-Chain Horror & Agent Architecture
 
-The game fully integrates with Base Mainnet to permanently immortalize your psychological descent:
+The game fully integrates with Base Mainnet to permanently immortalize your psychological descent. It is orchestrated by the **Blink Breathe Orchestrator**, an ERC-8004 compatible AI Agent.
 
-1. **ERC-8021 Transaction Attribution**: Records builder and game origins on-chain.
-2. **ERC-8004 Trustless Agents (`Blink Breathe Orchestrator`)**: Interacts with automated mindful breathing logic via the `.well-known/agent-card.json` standard.
-3. **Record Nightmare On-Chain**: Once the entities ultimately catch you, broadcast a permanent verification of your survival run to the void.
+### Capabilities:
+- blink-breathe-synchronization
+- mindful-breathing-automation
+- micro-pause-orchestration
+- calm-state-management
+- wellness-guidance
+- rhythmic-breathing
+- mcp-command-execution
 
-## Development
+### ERC-8004 Agent Registration:
+The ERC-8004 standard manifest is securely exposed to the network to enable trustless agent discovery and automated health monitoring:
+- **A2A Service**: `/.well-known/agent-card.json`
+- **MCP Server**: `/api/mcp`
+- **API Endpoint**: `/api/agent`
 
-This project is built using:
-- **React 19 & Vite**
-- **Framer Motion** for UI/horror animations
-- **TypeScript & Tailwind CSS**
-- **HTML5 Canvas** for the high-performance generative liminal space
-- **Express.js** as an backend to host MCP endpoints for AI Agents.
+## Connecting MCP Clients
+The platform exposes a standard Model Context Protocol (MCP) server over HTTPS JSON-RPC.
+The MCP endpoint is located at `https://blink-breathe-2.vercel.app/api/mcp` and provides capabilities to sync the agent with external logic.
 
-### Agent Architecture
-The backend serves an ERC-8004 compatible agent discovery endpoint at `/.well-known/agent-card.json`.
-The orchestrator MCP logic runs at `/api/mcp`.
+## Technical Requirements
+- **Frontend:** React 19, TypeScript, Tailwind CSS, Vite
+- **Visuals:** Framer Motion, HTML5 Canvas
+- **Web3 Integration:** Wagmi, Viem, Base Mainnet, SIWE
+- **Serverside:** Vercel App Router / Express.js
 
-## Setup
+## Local Setup
 ```bash
 npm install
 npm run dev

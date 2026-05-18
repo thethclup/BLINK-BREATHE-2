@@ -4,24 +4,56 @@
   "version": "1.0.0",
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "image": "https://blink-breathe-2.vercel.app/logo.png",
-  "wallets": {
-    "base": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6"
-  },
+  "owner": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
+  "agentWallet": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
+  "active": true,
+  "skills": [
+    {
+      "id": "blink-breathe-synchronization",
+      "name": "Blink Breathe Synchronization",
+      "description": "Synchronize on-chain state with player's breathing and blink actions in real-time."
+    },
+    {
+      "id": "mindful-breathing-automation",
+      "name": "Mindful Breathing Automation",
+      "description": "Orchestrates micro-pauses and mindful breathing automation to manage fear levels."
+    },
+    {
+      "id": "calm-state-management",
+      "name": "Calm State Management",
+      "description": "Triggers calm states and safe room interactions when sanity reaches critical thresholds."
+    },
+    {
+      "id": "warp-racing",
+      "name": "Warp Racing",
+      "description": "Real-time warp racing mechanics, speed optimization and competitive track management. (Included as per explicit instruction)"
+    },
+    {
+      "id": "multi-track-orchestration",
+      "name": "Multi-Track Orchestration",
+      "description": "Manage and synchronize multiple racing instances and tracks simultaneously. (Included as per explicit instruction)"
+    },
+    {
+      "id": "performance-optimization",
+      "name": "Performance Optimization",
+      "description": "Analyze and optimize racing performance, timing and strategy in real-time. (Included as per explicit instruction)"
+    }
+  ],
   "services": [
     {
       "name": "A2A",
-      "endpoint": "https://blink-breathe-2.vercel.app/.well-known/agent-card.json",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "endpoint": "https://blink-breathe-2.vercel.app/.well-known/agent-card.json"
     },
     {
       "name": "MCP",
-      "endpoint": "https://blink-breathe-2.vercel.app/api/mcp",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "endpoint": "https://blink-breathe-2.vercel.app/api/mcp"
     },
     {
       "name": "API",
-      "endpoint": "https://blink-breathe-2.vercel.app/api/agent",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "endpoint": "https://blink-breathe-2.vercel.app/api/agent"
     }
   ],
   "capabilities": [
@@ -31,9 +63,21 @@
     "calm-state-management",
     "wellness-guidance",
     "rhythmic-breathing",
-    "mcp-command-execution"
+    "mcp-command-execution",
+    "warp-racing",
+    "multi-track-management"
   ],
-  "supportedChains": ["eip155:8453"],
-  "active": true,
-  "status": "online"
+  "supportedChains": [
+    "eip155:8453"
+  ],
+  "x402Support": false,
+  "registrations": [
+    {
+      "agentId": null,
+      "agentRegistry": "[PLACEHOLDER_REGISTRY_ADDRESS]"
+    }
+  ],
+  "supportedTrust": [
+    "reputation"
+  ]
 }
