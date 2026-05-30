@@ -1,13 +1,5 @@
 import { NextResponse } from 'next/server';
 
-function corsHeaders() {
-  return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization"
-  };
-}
-
 export async function GET() {
   return NextResponse.json({
     protocol: "MCP",
@@ -17,7 +9,13 @@ export async function GET() {
     description: "Active MCP server for Blink Breathe Orchestrator",
     capabilities: ["blink-breathe-synchronization", "mindful-breathing-automation", "calm-state-management"],
     timestamp: new Date().toISOString()
-  }, { headers: corsHeaders() });
+  }, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization"
+    }
+  });
 }
 
 export async function POST(req: Request) {
@@ -34,17 +32,10 @@ export async function POST(req: Request) {
           id,
           result: {
             protocolVersion: "2024-11-05",
-            capabilities: {
-              tools: {},
-              prompts: {},
-              resources: {}
-            },
-            serverInfo: {
-              name: "Blink Breathe Orchestrator",
-              version: "1.0.0"
-            }
+            capabilities: { tools: {}, prompts: {}, resources: {} },
+            serverInfo: { name: "Blink Breathe Orchestrator", version: "1.0.0" }
           }
-        }, { headers: corsHeaders() });
+        }, { headers: { "Access-Control-Allow-Origin": "*" } });
       }
 
       if (method === "tools/list") {
@@ -53,34 +44,14 @@ export async function POST(req: Request) {
           id,
           result: {
             tools: [
-              {
-                name: "get_race_status",
-                description: "Get the current warp race status",
-                inputSchema: { type: "object", properties: {} }
-              },
-              {
-                name: "start_race",
-                description: "Start a warp race session",
-                inputSchema: { type: "object", properties: {} }
-              },
-              {
-                name: "get_leaderboard",
-                description: "Get the leaderboard",
-                inputSchema: { type: "object", properties: {} }
-              },
-              {
-                name: "optimize_speed",
-                description: "Optimize speed parameters",
-                inputSchema: { type: "object", properties: {} }
-              },
-              {
-                name: "get_track_info",
-                description: "Get information about the current track",
-                inputSchema: { type: "object", properties: {} }
-              }
+              { name: "get_race_status", description: "Get the current warp race status", inputSchema: { type: "object", properties: {} } },
+              { name: "start_race", description: "Start a warp race session", inputSchema: { type: "object", properties: {} } },
+              { name: "get_leaderboard", description: "Get the leaderboard", inputSchema: { type: "object", properties: {} } },
+              { name: "optimize_speed", description: "Optimize speed parameters", inputSchema: { type: "object", properties: {} } },
+              { name: "get_track_info", description: "Get information about the current track", inputSchema: { type: "object", properties: {} } }
             ]
           }
-        }, { headers: corsHeaders() });
+        }, { headers: { "Access-Control-Allow-Origin": "*" } });
       }
 
       if (method === "tools/call") {
@@ -88,67 +59,34 @@ export async function POST(req: Request) {
           jsonrpc: "2.0",
           id,
           result: {
-            content: [
-              {
-                type: "text",
-                text: `Successfully executed tool: ${params?.name || 'unknown'}`
-              }
-            ]
+            content: [{ type: "text", text: `Successfully executed tool: ${params?.name || 'unknown'}` }]
           }
-        }, { headers: corsHeaders() });
+        }, { headers: { "Access-Control-Allow-Origin": "*" } });
       }
 
       if (method === "prompts/list" || method === "resources/list") {
-        return NextResponse.json({
-          jsonrpc: "2.0",
-          id,
-          result: {
-            [method.split('/')[0]]: []
-          }
-        }, { headers: corsHeaders() });
+        return NextResponse.json({ jsonrpc: "2.0", id, result: { [method.split('/')[0]]: [] } }, { headers: { "Access-Control-Allow-Origin": "*" } });
       }
     }
 
     // Legacy / Custom Orchestrator Commands
     const { action, command, params, task } = body;
     const cmd = (action || command || task || "").toLowerCase();
-
     let result: any = {};
 
     switch (cmd) {
       case "status":
       case "ping":
-        result = { 
-          status: "online", 
-          agent: "Blink Breathe Orchestrator",
-          message: "Breathing in sync... Calm mode active" 
-        };
+        result = { status: "online", agent: "Blink Breathe Orchestrator", message: "Breathing in sync... Calm mode active" };
         break;
-
       case "execute":
-        result = {
-          success: true,
-          executed: params || command,
-          executedAt: new Date().toISOString(),
-          message: "Breathing cycle completed successfully"
-        };
+        result = { success: true, executed: params || command, executedAt: new Date().toISOString(), message: "Breathing cycle completed successfully" };
         break;
-
       case "get_info":
-        result = {
-          name: "Blink Breathe Orchestrator",
-          wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
-          platform: "Base",
-          version: "1.0.0"
-        };
+        result = { name: "Blink Breathe Orchestrator", wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6", platform: "Base", version: "1.0.0" };
         break;
-
       default:
-        result = {
-          success: true,
-          message: "Breath command received",
-          data: body
-        };
+        result = { success: true, message: "Breath command received", data: body };
     }
 
     return NextResponse.json({
@@ -156,12 +94,9 @@ export async function POST(req: Request) {
       agent: "Blink Breathe Orchestrator",
       response: result,
       receivedAt: new Date().toISOString()
-    }, { headers: corsHeaders() });
+    }, { headers: { "Access-Control-Allow-Origin": "*" } });
 
   } catch (error) {
-    return NextResponse.json({
-      status: "error",
-      message: "Failed to process breathing command"
-    }, { status: 400, headers: corsHeaders() });
+    return NextResponse.json({ status: "error", message: "Failed to process breathing command" }, { status: 400, headers: { "Access-Control-Allow-Origin": "*" } });
   }
 }

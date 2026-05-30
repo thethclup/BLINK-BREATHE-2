@@ -26,6 +26,16 @@ The game fully integrates with Base Mainnet to permanently immortalize your psyc
 - wellness-guidance
 - rhythmic-breathing
 - mcp-command-execution
+- warp-racing
+- multi-track-management
+
+### Skills:
+- Blink Breathe Synchronization
+- Mindful Breathing Automation
+- Calm State Management
+- Warp Racing
+- Multi-Track Orchestration
+- Performance Optimization
 
 ### ERC-8004 Agent Registration:
 The ERC-8004 standard manifest is securely exposed to the network to enable trustless agent discovery and automated health monitoring:
@@ -41,7 +51,8 @@ The MCP endpoint is located at `https://blink-breathe-2.vercel.app/api/mcp` and 
 - **Frontend:** React 19, TypeScript, Tailwind CSS, Vite
 - **Visuals:** Framer Motion, HTML5 Canvas
 - **Web3 Integration:** Wagmi, Viem, Base Mainnet, SIWE
-- **Serverside:** Vercel App Router / Express.js
+- **Serverside:** Vercel Serverless Functions / Node.js
+
 
 ## Local Setup
 ```bash
