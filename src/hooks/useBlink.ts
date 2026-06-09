@@ -2,24 +2,21 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useBlink() {
   const [isEyesOpen, setIsEyesOpen] = useState(false);
-  const [blinkTimer, setBlinkTimer] = useState(100); // Percentage
-  const [sanity, setSanity] = useState(100);
-  const [fear, setFear] = useState(0);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [breathLevel, setBreathLevel] = useState(0); // 0 to 100, 100 is "out of breath"
+  const [blinkTimer, setBlinkTimer] = useState(100); // 100 is fully rested
+  const [innerCalm, setInnerCalm] = useState(0); 
+  const [breathSync, setBreathSync] = useState(0);
+  const [isSessionComplete, setIsSessionComplete] = useState(false);
+  const [breathLevel, setBreathLevel] = useState(0); // 0 to 100 (100 = deep breath held)
   const [isHoldingBreath, setIsHoldingBreath] = useState(false);
   
-  const timerRef = useRef<number | null>(null);
-
   const startStaring = useCallback(() => {
-    if (isGameOver) return;
+    if (isSessionComplete) return;
     setIsEyesOpen(true);
-  }, [isGameOver]);
+  }, [isSessionComplete]);
 
   const blink = useCallback(() => {
     setIsEyesOpen(false);
-    // Recharge blink timer slightly on blink
-    setBlinkTimer(prev => Math.min(prev + 15, 100));
+    setBlinkTimer(prev => Math.min(prev + 20, 100));
   }, []);
 
   const toggleBreath = useCallback((holding: boolean) => {
@@ -27,63 +24,73 @@ export function useBlink() {
   }, []);
 
   useEffect(() => {
-    if (isGameOver) return;
+    if (isSessionComplete) return;
 
     const interval = setInterval(() => {
-      // Blink and Sanity logic
+      // Vision Logic
       if (isEyesOpen) {
         setBlinkTimer(prev => {
-          const next = prev - 0.5;
+          const next = prev - 0.2;
           if (next <= 0) {
             blink(); 
             return 0;
           }
           return next;
         });
-        setSanity(prev => Math.max(prev - 0.1, 0));
       } else {
-        setBlinkTimer(prev => Math.min(prev + 1, 100));
+        setBlinkTimer(prev => Math.min(prev + 1.5, 100));
       }
 
-      // Breathing logic
+      // Breathing Logic
       if (isHoldingBreath) {
         setBreathLevel(prev => {
-          const next = prev + 1.2;
-          if (next >= 100) {
-            setIsHoldingBreath(false); // Forced gasp
-            setFear(f => Math.min(f + 10, 100)); // Gasping increases fear
-            return 100;
-          }
+          const next = prev + 1.0; // Fill lungs
+          if (next >= 100) return 100;
           return next;
         });
+        
+        // Increase calm if holding a good deep breath
+        if (breathLevel > 50) {
+          setInnerCalm(prev => Math.min(prev + 0.1, 100));
+        }
       } else {
-        setBreathLevel(prev => Math.max(prev - 0.8, 0));
+        setBreathLevel(prev => {
+          const next = prev - 1.5; // Exhale
+          if (next <= 0) return 0;
+          return next;
+        });
       }
 
-      // Fear increases over time, and spikes based on visual horror
-      setFear(prev => Math.min(prev + 0.05, 100));
+      // Breath Sync mechanics (combining gentle blink + breath)
+      if (innerCalm > 20 && breathLevel > 20 && !isEyesOpen) {
+        setBreathSync(prev => Math.min(prev + 0.2, 100));
+      } else if (isEyesOpen) {
+        setBreathSync(prev => Math.max(prev - 0.1, 0));
+      }
+
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isEyesOpen, isGameOver, blink, isHoldingBreath]);
+  }, [isEyesOpen, isSessionComplete, blink, isHoldingBreath, breathLevel, innerCalm]);
 
   useEffect(() => {
-    if (sanity <= 0) {
-      setIsGameOver(true);
+    // If you achieve ultimate harmony
+    if (innerCalm >= 100 && breathSync >= 100) {
+      setIsSessionComplete(true);
     }
-  }, [sanity]);
+  }, [innerCalm, breathSync]);
 
   return {
     isEyesOpen,
     blinkTimer,
-    sanity,
-    fear,
-    isGameOver,
+    innerCalm,
+    breathSync,
+    isSessionComplete,
     breathLevel,
     isHoldingBreath,
     startStaring,
     blink,
     toggleBreath,
-    setIsGameOver
+    setIsSessionComplete
   };
 }

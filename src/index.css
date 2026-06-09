@@ -1,28 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --font-serif: "Playfair Display", serif;
+  --font-serif: "Cinzel", serif;
   
-  --color-horror-bg: #050505;
-  --color-horror-ink: #141414;
-  --color-horror-red: #8B0000;
-  --color-horror-gray: #2D2D2D;
+  --color-peace-bg: #EAE3D9;
+  --color-peace-light: #F7F3EE;
+  --color-peace-gold: #E8A020;
+  --color-peace-sage: #9AB29F;
+  --color-peace-dark: #2F3942;
+  --color-peace-highlight: #FFFDF9;
 }
 
 @layer base {
   body {
-    @apply bg-horror-bg text-gray-300 font-sans overflow-hidden select-none touch-none;
+    @apply bg-peace-bg text-peace-dark font-sans overflow-hidden select-none touch-none;
   }
 }
 
 .liminal-noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+  opacity: 0.03;
+  mix-blend-mode: multiply;
 }
 
-.eye-strain {
-  box-shadow: inset 0 0 100px rgba(139, 0, 0, 0.3);
+.glow-effect {
+  box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.4);
 }
